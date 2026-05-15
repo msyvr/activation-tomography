@@ -1,3 +1,10 @@
+> *Preserved from [`kitft/natural_language_autoencoders`](https://github.com/kitft/natural_language_autoencoders)
+> at commit `047eb8e40452982d38f83721f9fb2c77baf6b0cf` (tag `upstream-fork-point`).
+> Internal path references updated to reflect this fork's organization;
+> otherwise unchanged.*
+
+---
+
 # NLA Inference
 
 Standalone inference client + recipe for NLA (Natural Language Autoencoder) models.

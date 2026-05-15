@@ -1,5 +1,13 @@
 # NLA — instructions for Claude / AI assistants
 
+> *Originally from [`kitft/natural_language_autoencoders`](https://github.com/kitft/natural_language_autoencoders)
+> at commit `047eb8e40452982d38f83721f9fb2c77baf6b0cf`. Kept at the repo root
+> because Claude Code reads `CLAUDE.md` from there. Modifications by this fork:
+> two doc-path references updated to reflect the move of upstream docs into
+> `docs/nla_upstream/` (see `NOTICE.md`). Content otherwise unchanged.*
+
+---
+
 ## Constraints
 
 - **This is an open-source repo.** Only standard libs: `pathlib.Path`,
@@ -9,7 +17,7 @@
 - **Miles is upstream, not ours.** Don't edit files under `miles/` — extend via
   subclassing (`NLAFSDPActor`) and the `--*-path` function-pointer args. The
   two upstream patches we depend on (`--custom-actor-cls-path`,
-  `--force-use-critic`) are documented in `docs/design.md` §2.
+  `--force-use-critic`) are documented in `docs/nla_upstream/design.md` §2.
 - Miles uses argparse; match that for CLIs in `nla/`.
 - Storage and completion-provider backends are pluggable via import-path
   strings (`--storage-cls`, `--provider-cls`). The shipped implementations are
@@ -46,5 +54,5 @@
 
 If injection silently fails the actor sees the literal CJK marker char and
 free-associates Chinese. Grep generated text for CJK — that's the loudest
-smoke test for the entire injection path. See `docs/inference.md`
+smoke test for the entire injection path. See `docs/nla_upstream/inference.md`
 § "Debugging: injection-failure smell" for the cause checklist.

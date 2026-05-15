@@ -9,8 +9,11 @@ this repository).
 The original work is the open-source library accompanying the Anthropic
 Transformer Circuits paper *Natural Language Autoencoders Produce Unsupervised
 Explanations of LLM Activations* (Fraser-Taliente, Kantamneni, Ong et al.,
-2026, <https://transformer-circuits.pub/2026/nla/index.html>). The original
-README is preserved verbatim in `README_NLA.md`.
+2026, <https://transformer-circuits.pub/2026/nla/index.html>). The upstream
+README and the three upstream developer-facing docs (`design.md`,
+`inference.md`, `setup.md`) are preserved under `docs/nla_upstream/`, with
+content unchanged except for a provenance header note and internal path
+references updated to reflect this fork's organization.
 
 ## License
 
@@ -22,20 +25,28 @@ will be marked in git history and summarized below as the work progresses.
 
 ## Modifications
 
-No substantive code modifications yet. As the work develops, summaries will be
-added here with pointers to relevant commits or release tags.
+In accordance with Apache 2.0 §4(b), the following non-code modifications have
+been made relative to the upstream commit
+`047eb8e40452982d38f83721f9fb2c77baf6b0cf`. Significant code modifications
+will be summarized here as the work progresses.
 
-The initial fork-establishment commit (this commit) adds the following non-code
-files to organize the fork:
-
-- `README.md` — new front page describing the research direction; the original
-  README is preserved at `README_NLA.md`.
-- `README_NLA.md` — original README, preserved verbatim.
-- `NOTICE.md` — this file.
-- `CITATION.cff` — structured citation metadata for this fork.
-- `pyproject.toml` — updated `[project].name`, description, and URLs to reflect
-  this fork; the Python package directory (`nla/`) and all imports are
+### Fork-establishment commit
+- Added `README.md` (new front page describing this fork's research direction).
+- Added `NOTICE.md` (this file).
+- Added `CITATION.cff` (structured citation metadata for this fork).
+- Updated `pyproject.toml`: changed `[project].name` from `nla` to
+  `activation-tomography`, reset version to 0.0.1, updated description and
+  URLs. The Python package directory (`nla/`) and all Python imports are
   unchanged.
+
+### Documentation reorganization commit
+- Moved the upstream README and developer-facing docs into `docs/nla_upstream/`
+  (was: `README_NLA.md`, `docs/design.md`, `docs/inference.md`,
+  `docs/setup.md`).
+- Added a provenance header note to each moved file.
+- Updated internal cross-references and path references within the moved
+  files, in this `NOTICE.md`, in `README.md`, and in the upstream `CLAUDE.md`
+  (which remains at the repo root because Claude Code consumes it from there).
 
 ## Citation
 

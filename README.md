@@ -44,7 +44,7 @@ Forked from
 at commit
 [`047eb8e40452982d38f83721f9fb2c77baf6b0cf`](https://github.com/kitft/natural_language_autoencoders/commit/047eb8e40452982d38f83721f9fb2c77baf6b0cf),
 tagged `upstream-fork-point` in this repository. The original README is
-preserved verbatim in [`README_NLA.md`](README_NLA.md). See
+preserved verbatim in [`docs/nla_upstream/README.md`](docs/nla_upstream/README.md). See
 [`NOTICE.md`](NOTICE.md) for full attribution.
 
 ## License

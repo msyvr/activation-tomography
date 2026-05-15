@@ -1,3 +1,10 @@
+> *Preserved from [`kitft/natural_language_autoencoders`](https://github.com/kitft/natural_language_autoencoders)
+> at commit `047eb8e40452982d38f83721f9fb2c77baf6b0cf` (tag `upstream-fork-point`).
+> Internal path references updated to reflect this fork's organization;
+> otherwise unchanged.*
+
+---
+
 # Natural Language Autoencoders (NLA)
 
 Open-source library accompanying the Anthropic Transformer Circuits post
@@ -66,7 +73,7 @@ NLA training is built as a thin extension on top of two open-source projects:
   upstream `--custom-rm-path`, `--data-source-path`, and
   `--custom-generate-function-path` extension points; the integration patch in
   `nla/miles_patches/` adds `--custom-actor-cls-path` and `--force-use-critic`
-  on top (see [docs/design.md §2](docs/design.md)).
+  on top (see [docs/nla_upstream/design.md §2](docs/nla_upstream/design.md)).
 - **[SGLang](https://github.com/sgl-project/sglang)** — rollout serving. We
   send `input_embeds` (not `input_ids`) so the AV sees the injected vector;
   SGLang serves it like any other request. The embed sequence is built on the
@@ -123,12 +130,12 @@ pq.write_table(pa.table({"activation_vector": hs.float().cpu().tolist()}), "demo
 `nla_inference.py` is a single self-contained file. The full recipe —
 model-specific scale factors, the Gemma `√d` embed-scale gotcha, debugging the
 "output is in Chinese" failure mode, AR scoring — is in
-**[docs/inference.md](docs/inference.md)**. Worked transcripts in
+**[docs/nla_upstream/inference.md](docs/nla_upstream/inference.md)**. Worked transcripts in
 [`examples/`](examples/).
 
 ### Training (reproduce a checkpoint)
 
-Install Miles + SGLang + this package per **[docs/setup.md](docs/setup.md)**,
+Install Miles + SGLang + this package per **[docs/nla_upstream/setup.md](docs/nla_upstream/setup.md)**,
 then run the three stages (Qwen7B reference: SFT on 2×H100-80GB; RL to ~75% FVE
 on 2×8×H100 — see [`configs/TRAINING_NOTES.md`](configs/TRAINING_NOTES.md)):
 
@@ -148,7 +155,7 @@ bash configs/rl.sh
 
 The full design — data transport through Miles' `multimodal_train_inputs`, the
 injection forward-hook, simultaneous AV/AR scheduling, why `cp_size==1` — is in
-**[docs/design.md](docs/design.md)**. Detailed profiling and hyperparameter
+**[docs/nla_upstream/design.md](docs/nla_upstream/design.md)**. Detailed profiling and hyperparameter
 notes (Qwen7B case study; we reused those settings with only light adjustment
 for the other models — a per-model sweep would likely do better):
 [`configs/TRAINING_NOTES.md`](configs/TRAINING_NOTES.md).

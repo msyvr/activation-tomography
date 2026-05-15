@@ -1,3 +1,10 @@
+> *Preserved from [`kitft/natural_language_autoencoders`](https://github.com/kitft/natural_language_autoencoders)
+> at commit `047eb8e40452982d38f83721f9fb2c77baf6b0cf` (tag `upstream-fork-point`).
+> Internal path references updated to reflect this fork's organization;
+> otherwise unchanged.*
+
+---
+
 # NLA-on-Miles: Design & Integration
 
 **Goal:** Build NLA (Natural Language Autoencoder) training on top of Miles cleanly — using its extension points rather than monkey-patching, so we can pull upstream miles updates without constant merge hell.
@@ -382,7 +389,7 @@ So within the packed stream, each sample's `[..., left_id, inj_id, right_id, ...
 
 ## 6. `nla/` Package Layout
 
-Miles is installed as a separate package (see `docs/setup.md`), not vendored here. The two upstream patches (§2) are applied to the installed `miles` package.
+Miles is installed as a separate package (see `docs/nla_upstream/setup.md`), not vendored here. The two upstream patches (§2) are applied to the installed `miles` package.
 
 ```
 natural_language_autoencoders/

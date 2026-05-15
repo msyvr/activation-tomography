@@ -3,9 +3,9 @@ requires = ["setuptools>=64", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "nla"
-version = "0.1.0"
-description = "Natural Language Autoencoders: train models to read and write residual-stream activations as text"
+name = "activation-tomography"
+version = "0.0.1"
+description = "Activation tomography: an inverse-problem framing for LLM interpretability via natural language autoencoders. Research fork of kitft/natural_language_autoencoders."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {file = "LICENSE"}
@@ -27,7 +27,8 @@ dependencies = [
 #   megatron : optional, only for the Megatron backend (70B+)
 
 [project.urls]
-Homepage = "https://github.com/kitft/natural_language_autoencoders"
+Homepage = "https://github.com/msyvr/activation-tomography"
+SourceFork = "https://github.com/kitft/natural_language_autoencoders"
 
 [tool.setuptools.packages.find]
 include = ["nla*"]

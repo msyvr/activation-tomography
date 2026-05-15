@@ -1,0 +1,75 @@
+cff-version: 1.2.0
+title: activation-tomography
+message: "If you use this software, please cite both this work and the original NLA repository it builds on."
+type: software
+authors:
+  - family-names: Spisar
+    given-names: Monica
+    orcid: "https://orcid.org/0009-0006-1719-4798"
+    website: "https://monicaspisar.com"
+repository-code: "https://github.com/msyvr/activation-tomography"
+abstract: >
+  An inverse-problem framing for LLM interpretability via natural language
+  autoencoders. Research fork of kitft/natural_language_autoencoders, with a
+  focus on measurement of LLM and agent collective behaviors.
+keywords:
+  - mechanistic-interpretability
+  - natural-language-autoencoders
+  - inverse-problems
+  - multi-agent
+  - ai-safety
+license: Apache-2.0
+references:
+  - type: article
+    title: "Natural Language Autoencoders Produce Unsupervised Explanations of LLM Activations"
+    authors:
+      - family-names: Fraser-Taliente
+        given-names: Kit
+      - family-names: Kantamneni
+        given-names: Subhash
+      - family-names: Ong
+        given-names: Euan
+      - family-names: Mossing
+        given-names: Dan
+      - family-names: Lu
+        given-names: Christina
+      - family-names: Bogdan
+        given-names: "Paul C."
+      - family-names: Ameisen
+        given-names: Emmanuel
+      - family-names: Chen
+        given-names: James
+      - family-names: Kishylau
+        given-names: Dzmitry
+      - family-names: Pearce
+        given-names: Adam
+      - family-names: Tarng
+        given-names: Julius
+      - family-names: Wu
+        given-names: Alex
+      - family-names: Wu
+        given-names: Jeff
+      - family-names: Zhang
+        given-names: Yang
+      - family-names: Ziegler
+        given-names: "Daniel M."
+      - family-names: Hubinger
+        given-names: Evan
+      - family-names: Batson
+        given-names: Joshua
+      - family-names: Lindsey
+        given-names: Jack
+      - family-names: Zimmerman
+        given-names: Samuel
+      - family-names: Marks
+        given-names: Samuel
+    journal: "Transformer Circuits Thread"
+    year: 2026
+    url: "https://transformer-circuits.pub/2026/nla/index.html"
+  - type: software
+    title: natural_language_autoencoders
+    authors:
+      - family-names: Fraser-Taliente
+        given-names: Kit
+    repository-code: "https://github.com/kitft/natural_language_autoencoders"
+    license: Apache-2.0

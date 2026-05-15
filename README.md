@@ -1,5 +1,9 @@
 # activation-tomography
 
+_Research toward a systematic methodology for characterizing, configuring,
+and validating Natural Language Autoencoders as measurement instruments
+for AI safety applications._
+
 > **Status**: research fork, work in progress. Started 2026-05-14. This README
 > will evolve as the research direction sharpens.
 
@@ -7,35 +11,44 @@
 interpretability: given a model's high-dimensional internal state, reconstruct
 a low-dimensional, human-readable description, then validate by checking that
 the round trip recovers the original state. The framing is structurally
-analogous to medical imaging tomography (CT, PET, MRI, OCT), where
-high-dimensional latents are recovered from low-dimensional projections under
-consistency constraints.
+analogous to medical imaging tomography (CT, PET, MRI, ultrasound
+tomography, OCT), where high-dimensional latents are recovered from
+low-dimensional projections under consistency constraints.
 
 This repository instantiates the framing using **Natural Language Autoencoders
 (NLAs)** as the reconstruction instrument. The NLA architecture, training
 infrastructure, and released checkpoints are forked from
 [`kitft/natural_language_autoencoders`](https://github.com/kitft/natural_language_autoencoders),
 the open-source library accompanying the Anthropic Transformer Circuits paper
-*Natural Language Autoencoders Produce Unsupervised Explanations of LLM
-Activations* (Fraser-Taliente, Kantamneni, Ong et al., 2026).
+_Natural Language Autoencoders Produce Unsupervised Explanations of LLM
+Activations_ (Fraser-Taliente, Kantamneni, Ong et al., 2026).
 
 ## Research direction
 
-Applying the activation-tomography framing to **measurement of LLM and agent
-collective behaviors** — multi-agent belief states, theory-of-mind,
-unverbalized coordination, and the identifiability limits of
-activation-language translation.
+The work has a clear primary contribution and a clear demonstration.
 
-Initial planned experiments (subject to evolution as the work proceeds):
+**Primary contribution: a systematic methodology for NLA characterization and cross-model comparison.** A new model developer who wants to use NLAs
+for safety evaluations or control monitoring on their own model currently
+faces a substantial trial-and-error problem — the released NLAs are
+characterized for the paper's specific case studies, but there is no
+systematic protocol for layer selection, instrument characterization
+across configurations, downstream-application calibration, cross-model
+comparison, or multi-method validation discipline. The methodology
+addresses these five gaps directly.
 
-- Replicating the Language Switching case study (Fraser-Taliente et al., 2026)
-  on open-model NLAs (Gemma-3-27B or similar).
-- Extending to two-agent settings: does agent A's NLA reveal A's internal
-  model of agent B?
-- Cross-agent evaluation-awareness propagation in agent chains.
-- Detecting unverbalized side-channels between communicating agents.
+**Demonstration: NLA characterization for monitor-activation sampling in AI control.** In AI control protocols that use an untrusted monitor, a known structural
+weakness is that the auditor inspects the monitor through its
+behavior, and that behavior may not be faithful to the monitor's intent. NLAs offer a candidate new tool — reading the monitor's activations to surface what it was actually thinking when it produced a verdict.
 
-A more detailed plan will be added in `RESEARCH.md` as the work crystallizes.
+**Natural cross-model application: capability vs. legibility.** Applying
+the methodology across the released open NLAs (7B → 70B capability range)
+answers a structurally separate, safety-relevant question: as target
+models grow more capable, does NLA-based interpretability degrade quietly
+while reconstruction quality stays high? The silent failure mode matters
+if NLAs are being used for safety findings at capability levels where
+their reliability has degraded.
+
+See [`RESEARCH.md`](RESEARCH.md) for a more detailed plan.
 
 ## Provenance
 
@@ -89,5 +102,5 @@ metadata (GitHub renders a "Cite this repository" button from this file).
 
 ---
 
-*Maintained by [Monica Spisar](https://monicaspisar.com), independent
-researcher ([ORCID 0009-0006-1719-4798](https://orcid.org/0009-0006-1719-4798)).*
+_Maintained by [Monica Spisar](https://monicaspisar.com), independent
+researcher ([ORCID 0009-0006-1719-4798](https://orcid.org/0009-0006-1719-4798))._

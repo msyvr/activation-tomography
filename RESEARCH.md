@@ -122,8 +122,13 @@ apples-to-apples comparison.
 **Validation discipline (multi-method)**. Standardized protocol for
 corroborating NLA findings with independent methods (causal
 interventions via AR-derived steering, linear probes for specific
-attributes, behavioral consistency checks). Ensures NLA-only positives
-don't drive downstream conclusions.
+attributes, behavioral consistency checks). Where the downstream
+question admits a task-specific causal model, interchange interventions
+on subspaces identified by DAS-style methods (cf.
+[causalab](https://github.com/goodfire-ai/causalab); Goodfire AI, 2025)
+provide a fourth, structurally independent validator — independent in
+the sense that it bypasses the NLA pipeline entirely, unlike AR-derived
+steering. Ensures NLA-only positives don't drive downstream conclusions.
 
 ## Demonstration: NLA characterization for monitor-activation sampling in AI control
 
@@ -297,8 +302,15 @@ Two natural deeper directions, both genuinely beyond the current plan:
    these as constraints on AV training or as priors on the inverse map
    would be the model-informed branch of activation tomography
    (paralleling physics-based reconstruction in medical imaging). Not
-   currently instantiated; the methodology being developed here would be
-   a natural substrate for such extensions.
+   currently instantiated for NLAs; the methodology being developed here
+   would be a natural substrate for such extensions. Goodfire's
+   [causalab](https://github.com/goodfire-ai/causalab) (Goodfire AI,
+   2025) instantiates the broader model-informed paradigm under a
+   different substrate — high-level causal models of task computation,
+   tested against the network via interchange interventions and subspace
+   methods (DAS, DBM, SAE). It is the closest existing analog and a
+   natural cross-method validator for the **Validation discipline**
+   methodology component above.
 2. **Identifiability theory.** Given activations from K agents at L
    layers (or more generally, multiple measurement geometries), what
    aspects of cognition are formally recoverable under the NLA
@@ -380,10 +392,13 @@ fit available access and revises timelines once access is secured.
 ## Immediate next steps
 
 1. **Literature and outreach check** for existing or in-progress work
-   at Redwood / Apollo / METR on NLA-in-control-protocols. Concrete
-   actions: recent arXiv + LessWrong + Alignment Forum search; direct
-   outreach to one or two Redwood researchers describing the proposed
-   methodology and demonstration, asking whether internal work
+   at Redwood / Apollo / METR on NLA-in-control-protocols, and at
+   Goodfire on causal-abstraction-based interpretability
+   ([causalab](https://github.com/goodfire-ai/causalab) is the
+   model-informed counterpart to this work — see §Longer-arc item 1).
+   Concrete actions: recent arXiv + LessWrong + Alignment Forum search;
+   direct outreach to one or two Redwood researchers describing the
+   proposed methodology and demonstration, asking whether internal work
    overlaps. Run this before committing significant compute.
 2. `uv sync` to install dependencies; verify the codebase runs.
 3. Load a released NLA checkpoint (Gemma-3-27B AV/AR) and run the
@@ -410,6 +425,9 @@ Document updates here as the work proceeds.
 - Marks, S., Treutlein, J., Bricken, T., et al. (2025). _Auditing
   language models for hidden objectives_. arXiv preprint
   arXiv:2503.10965.
+- Goodfire AI. (2025). _causalab: Causal abstraction for mechanistic
+  interpretability_ [Computer software]. GitHub.
+  <https://github.com/goodfire-ai/causalab>
 
 ---
 

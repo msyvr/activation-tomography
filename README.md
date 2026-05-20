@@ -20,8 +20,8 @@ This repository instantiates the framing using **Natural Language Autoencoders
 infrastructure, and released checkpoints are forked from
 [`kitft/natural_language_autoencoders`](https://github.com/kitft/natural_language_autoencoders),
 the open-source library accompanying the Anthropic Transformer Circuits paper
-_Natural Language Autoencoders Produce Unsupervised Explanations of LLM
-Activations_ (Fraser-Taliente, Kantamneni, Ong et al., 2026).
+[_Natural Language Autoencoders Produce Unsupervised Explanations of LLM
+Activations_](https://transformer-circuits.pub/2026/nla/) (Fraser-Taliente, Kantamneni, Ong et al., 2026).
 
 ## Research direction
 

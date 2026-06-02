@@ -48,6 +48,10 @@ while reconstruction quality stays high? The silent failure mode matters
 if NLAs are being used for safety findings at capability levels where
 their reliability has degraded.
 
+**First deliverable.** A standalone, runnable replication of the paper's Language
+Switching finding on an *open* model (Gemma-3-27B NLA) — a direct check that this class
+of work is in hand, ahead of the larger control-protocol demonstration.
+
 See [`RESEARCH.md`](RESEARCH.md) for a more detailed plan.
 
 ## Provenance

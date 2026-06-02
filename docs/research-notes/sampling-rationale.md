@@ -3,7 +3,7 @@
 ## Context
 
 An earlier draft of `RESEARCH.md`'s Compute section specified a Cartesian-product
-budget for Stage B: 3 layers × 3 token positions × 3 signal strengths × 20 prompts
+budget for Stage B (detector characterization): 3 layers × 3 token positions × 3 signal strengths × 20 prompts
 × 5 sample tokens ≈ 2,700 NLA inferences ≈ 1.3 M tokens of generation. A reviewer
 asked whether that combination meaningfully covered the experimental sample space,
 or whether coverage was even the right concept. This note records the resulting
@@ -54,7 +54,7 @@ sampling_; it's:
 that question need?**
 
 Stage B has one operational purpose: identify a (layer, token) configuration
-good enough for Stage C to be interpretable. That's optimization (find a peak),
+good enough for Stage C (the control-protocol demonstration) to be interpretable. That's optimization (find a peak),
 not characterization (map the whole landscape). Coverage thinking comes from
 QA / calibration contexts where the full space is known and finite. Research
 instrument characterization is usually decision-driven.
@@ -73,7 +73,7 @@ rank candidates with reasonable confidence.
 ### Decision 2: is the NLA recovering implicit cues at all at this scale?
 
 Compare explicit-cue vs. implicit-cue recovery at the candidate winner. Maybe
-30 compound prompts. 95% CI half-width ~±15%; usable.
+30 compound prompts. 95% CI half-width ≈±18% at 50% recovery (tighter further from it); usable.
 
 ### Decision 3: are there layers where the NLA is catastrophically blind?
 

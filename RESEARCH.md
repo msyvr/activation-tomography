@@ -104,7 +104,7 @@ standardized protocol for probing a trained NLA's recovery across
 configurations on controlled prompts with known signal content.
 Decision-driven and adaptive rather than exhaustive Cartesian sweep
 (detailed reasoning in
-[`docs/research-notes/stage-b-sampling-rationale.md`](docs/research-notes/stage-b-sampling-rationale.md)).
+[`docs/research-notes/sampling-rationale.md`](docs/research-notes/sampling-rationale.md)).
 Outputs a full reliability map across configurations — profiles, not a single
 pass/fail verdict — so a downstream user sees where the instrument works and where it
 doesn't, not only the best config.
@@ -163,7 +163,7 @@ methodology is designed to answer.
 - Ground truth: I control whether the monitored output is actually
   problematic, so verdict-vs-truth divergence is observable.
 - Apply NLA to M' at the verdict token using the configuration the
-  methodology's characterization step identifies as best.
+  methodology's characterization step recommends.
 - Score whether NLA-recovered claims about M's cognition correlate with
   monitor-failure ground truth.
 
@@ -380,7 +380,7 @@ target. Single H100 (80 GB) suffices; consumer GPUs do not.
 
 **NLA-inference budget** (order of magnitude):
 
-- Methodology preparation (calibration + detector characterization):
+- Calibration + detector characterization:
   ~500–1000 NLA inferences ≈ 250–500 K tokens. Rationale in
   [`docs/research-notes/sampling-rationale.md`](docs/research-notes/sampling-rationale.md).
 - AI-control demonstration (~3 monitor-failure conditions × ~100 NLA

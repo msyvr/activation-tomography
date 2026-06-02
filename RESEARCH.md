@@ -358,7 +358,9 @@ methodology characterizes but does not eliminate these.
 
 **Same-model readout (structural).** The NLA is trained on, and tied to, the activation
 space of the very model it reads — it cannot be swapped for a "different-model"
-instrument. Reading activations does bypass the behavioral self-report channel (the
+instrument. That tie is double-edged: it is what lets the NLA read this model's
+activations at all, and what bounds what the readout can surface. Reading activations
+does bypass the behavioral self-report channel (the
 point of the tool), but the readout still surfaces only what is *reconstruction-legible*,
 not necessarily what is decision-relevant, and it cannot surface what the model
 represents opaquely (compressed, superposed, or — at higher capability — steganographic).

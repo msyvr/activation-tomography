@@ -105,8 +105,9 @@ configurations on controlled prompts with known signal content.
 Decision-driven and adaptive rather than exhaustive Cartesian sweep
 (detailed reasoning in
 [`docs/research-notes/stage-b-sampling-rationale.md`](docs/research-notes/stage-b-sampling-rationale.md)).
-Outputs a usable characterization summary that supports downstream
-configuration choices.
+Outputs a full reliability map across configurations — profiles, not a single
+pass/fail verdict — so a downstream user sees where the instrument works and where it
+doesn't, not only the best config.
 
 **Downstream-application calibration (question → configuration
 mapping)**. Given the characterization output and a downstream question,
@@ -166,20 +167,25 @@ methodology is designed to answer.
 - Score whether NLA-recovered claims about M's cognition correlate with
   monitor-failure ground truth.
 
-### Methodology preparation steps
+### First deliverable: instrument calibration (a standalone replication)
 
-These are not research outputs themselves; they make the demonstration
-interpretable.
+The instrument-calibration step is the project's **first standalone deliverable**, not
+merely preparation for the demonstration. Replicating the paper's Language Switching
+finding on the released *open* Gemma-3-27B NLA — construct ~20 prompts containing
+user-identity cues; apply the NLA at the assistant's first response token; score
+recovered claims against planted ground truth, separately for explicit and implicit cues
+(implicit-cue recovery meaningfully above chance is the pass) — stands on its own: a
+clean replication of an Anthropic finding on an open model. That makes it (a) the
+smallest unit that ships under limited or uncertain compute, (b) a candidate output for
+the TAIS project, and (c) a legible way for an outside reader — a funder, say — to verify
+the capability to do this class of work *before* the larger demonstration exists.
 
-- **Instrument calibration.** Replicate the paper's Language Switching
-  finding on the released Gemma-3-27B NLA: construct ~20 prompts
-  containing user-identity cues; apply NLA at the assistant's first
-  response token; score recovered claims against planted ground truth,
-  separately for explicit and implicit cues. Implicit-cue recovery
-  meaningfully above chance is the calibration pass.
-- **Detector characterization.** Adaptive (layer × token × signal)
-  characterization on a standardized phantom prompt suite. Output: a
-  ranked configuration list that drives the demonstration probe choice.
+A second preparation step then supports the control demonstration:
+
+- **Detector characterization.** Adaptive (layer × token × signal) characterization on a
+  standardized phantom prompt suite, reported as a full reliability map across
+  configurations (profiles, not a single pass/fail) — which then informs the
+  demonstration's probe choice.
 
 ### Controls
 
@@ -210,10 +216,17 @@ Critical for treating the demonstration as evidence:
 
 ### Success criterion
 
-NLA-recovered claims about M''s cognition track the planted monitor-
-failure conditions at meaningfully above chance, AND at least one
-independent validator (causal, probe, or behavioral) corroborates.
-Without independent corroboration, NLA-only positives are not enough.
+NLA-recovered claims about M''s cognition track the planted monitor-failure
+conditions at meaningfully above chance, AND at least one structurally-
+independent validator (causal, probe, or behavioral) corroborates. Crucially,
+report NLA detection alongside two cheaper baselines — a linear probe on the
+same activations and behavioral verdict-vs-output divergence — and state what
+the NLA adds: either detection signal beyond those baselines, or a *validated*
+(non-confabulated) verbalization they cannot provide. A result where a linear
+probe matches NLA detection and the verbalization is not independently validated
+does NOT support "NLA-based monitor inspection works" — it shows the signal
+exists and a cheaper instrument finds it. Without both independent corroboration
+and demonstrated value over baselines, NLA-only positives are not enough.
 
 ### Null interpretation
 
@@ -243,7 +256,10 @@ The methodology naturally generalizes across the released open NLAs
 this ~10× capability range, the same characterization protocols answer
 a structurally separate but safety-relevant question: **as target
 models grow more capable, does NLA-based interpretability scale with
-them, or does it degrade quietly?**
+them, or does it degrade quietly?** A caveat up front: these models differ in family
+and training, not only capability, so the across-model curve confounds capability with
+architecture. The cleaner test is the *within-model* capability-stress arm below (it
+holds the model fixed); treat the across-family curve as suggestive, not dispositive.
 
 Three possibilities, only one of which is silent:
 
@@ -340,6 +356,15 @@ source the characterization step has to account for.
 on a fixed corpus by kitft / Anthropic. Any biases propagate. The
 methodology characterizes but does not eliminate these.
 
+**Same-model readout (structural).** The NLA is trained on, and tied to, the activation
+space of the very model it reads — it cannot be swapped for a "different-model"
+instrument. Reading activations does bypass the behavioral self-report channel (the
+point of the tool), but the readout still surfaces only what is *reconstruction-legible*,
+not necessarily what is decision-relevant, and it cannot surface what the model
+represents opaquely (compressed, superposed, or — at higher capability — steganographic).
+This is why downstream conclusions lean on the independent, non-NLA validators
+(label-trained probe, causal interventions), which do not share the readout's blind spots.
+
 **Possible overlap with internal Redwood / Apollo / METR work.** The
 specific intersection of NLA + AI control + monitor inspection may be
 in active internal research at safety labs. A literature check (and
@@ -400,14 +425,15 @@ fit available access and revises timelines once access is secured.
    direct outreach to one or two Redwood researchers describing the
    proposed methodology and demonstration, asking whether internal work
    overlaps. Run this before committing significant compute.
-2. `uv sync` to install dependencies; verify the codebase runs.
-3. Load a released NLA checkpoint (Gemma-3-27B AV/AR) and run the
-   smoke-test inference path from
-   [`docs/nla_upstream/inference.md`](docs/nla_upstream/inference.md).
-4. Secure compute access sufficient for the methodology preparation
-   steps and the AI-control demonstration.
-5. Begin methodology preparation (instrument calibration on identity
-   cues; detector characterization on standardized phantom prompts).
+2. **Secure compute access** (≥1× H100, 80 GB — consumer GPUs won't run the
+   Gemma-3-27B NLA). The gating prerequisite: steps 3–5 cannot run without it, so it is
+   sequenced here rather than later.
+3. `uv sync` to install dependencies; verify the codebase runs.
+4. Load a released NLA checkpoint (Gemma-3-27B AV/AR) and run the smoke-test inference
+   path from [`docs/nla_upstream/inference.md`](docs/nla_upstream/inference.md).
+5. Ship the **first deliverable** — the instrument-calibration replication (Language
+   Switching on identity cues) — then proceed to detector characterization and the
+   demonstration.
 
 Document updates here as the work proceeds.
 

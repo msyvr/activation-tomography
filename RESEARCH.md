@@ -2,7 +2,7 @@
 
 > _Living document_
 
-_This research is motivated by AI safety and alignment, with a focus on building reliable, characterized measurement instruments. The technical goal: develop a systematic methodology for characterizing, configuring, and validating Natural Language Autoencoders (NLAs) as measurement instruments — enabling cross-model comparison and downstream-application targeting that the field currently lacks. The chosen demonstration is NLA characterization for monitor-activation sampling in AI control protocols, with capability-vs-legibility tracking as a natural cross-model application._
+_This research is motivated by AI safety and alignment, with a focus on building reliable, characterized measurement instruments. The technical goal: develop a systematic methodology for characterizing, configuring, and validating Natural Language Autoencoders (NLAs) as measurement instruments — enabling cross-model comparison and downstream-application targeting that the field currently lacks. The chosen demonstration is NLA characterization for monitor-activation sampling in AI control protocols, with capability-vs-legibility tracking as a natural cross-model application. The demonstration is deliberately scoped to non-adversarial conditions; the adversarial-robustness axis that actually defines AI control is addressed as a separate, named extension — the **evasion tax**._
 
 ## Premise
 
@@ -150,6 +150,25 @@ question — "under what configurations is NLA-based monitor inspection
 reliable?" — is a characterization the proposed
 methodology is designed to answer.
 
+### Threat-model scope (auditing-grade vs. control-grade)
+
+One distinction governs how to read this demonstration. *Auditing* asks whether a property is
+detectable when it is present; *control* — the discipline this borrows its language from — asks
+whether a safety property holds **even while the subject optimizes against the check**, including
+shaping its internal representations to fool an internals reader. The experiment below induces M''s
+collusion with a system prompt and reads it: ground truth is the *imposed condition*, and M' is
+**not** optimizing its activations to evade the NLA. That makes the result **auditing-grade** —
+evidence that the internals signal is present and readable under non-adversarial conditions. It is
+**not** yet control-grade, because the defining control question — does the readout survive a monitor
+that *optimizes to evade it* — is not instantiated here.
+
+This is a deliberate scope boundary, not an oversight: characterizing the instrument under
+non-adversarial conditions is the prerequisite, and the adversarial axis is addressed separately as
+the **evasion-tax extension** (below; full framing in
+[`docs/research-notes/evasion-tax.md`](docs/research-notes/evasion-tax.md)). Stated plainly so the
+control framing is not over-read: *a positive here shows the NLA can read induced collusion — not
+that it catches a monitor actively hiding collusion from it.*
+
 ### Experiment setup
 
 - One open model (Gemma-3-27B initially) playing both the untrusted
@@ -295,6 +314,14 @@ concrete operational stake.
   range; look for divergence between small-model and large-model
   responses to meaning-preserving transformations.
 
+**Adversarial twin of Mode 2.** Mode 2 tracks whether *passive* legibility silently degrades as
+capability rises. Its adversarial counterpart tracks whether *evasion gets cheaper*: run the
+evasion-tax measurement (see §Adversarial extension) across this same capability ladder and ask
+whether high-tax configs **erode** — whether a more capable monitor can hide its cognition from the
+reader at lower task-performance cost. Eroding tax is the adversarial early-warning that internals
+monitoring is losing its grip at the frontier, and is among the most decision-relevant cross-model
+signals the project can produce.
+
 ### What this enables
 
 - **Audit calibration.** Pre-deployment auditing using NLAs needs to
@@ -307,6 +334,35 @@ concrete operational stake.
 - **A "are we keeping pace" signal** — quantitative evidence on
   whether interpretability is scaling with capability, which the field
   currently lacks.
+
+## Adversarial extension: measuring the evasion tax
+
+The demonstration above is scoped to non-adversarial conditions (§Threat-model scope). The
+control-grade question — *does an internals readout survive a monitor optimizing to evade it?* — need
+not be a yes/no wall; it can be a measurement. Reframe adversarial robustness as a **surface**: for
+each config (layer, token), how much task performance must an adversarial M' sacrifice to look benign
+to the reader — the **evasion tax**?
+
+- **Decision-relevant in both directions.** A high-tax config squeezes the adversary's option set (be
+  read, or pay a measurable performance cost a behavioral audit can catch); a *negative* — no high-tax
+  config anywhere M' actually computes — is a clean, currently-unmeasured verdict that internals
+  monitoring of an untrusted monitor is structurally fragile, and should not be leaned on for control.
+- **It is a behavioral measurement.** The tax is M''s task-performance cost under forced evasion — it
+  does not depend on trusting the verbalization, which lifts weight off the validation long-pole. (The
+  reader's non-adversarial-condition reliability still rests on the independent validators.)
+- **Two adversary strengths.** A *prompted* adversary (tax-v0) is cheap and ships under compute
+  uncertainty; a *trained* adversary (cf. Neural Chameleons) is the heavier, methodologically harder
+  version the flagship follow-on targets. Either way the deliverable is a **lower bound against a named
+  red-team R**: *"evasion costs ≥ X% against R; no free competent encoding found within R's search"* —
+  not an existence claim.
+- **Capability scaling.** Tracking the tax surface across the open-NLA ladder is the adversarial twin
+  of Mode 2: does evasion get cheaper as capability rises?
+
+Full framing — the adversary's trilemma, the control-ledger accounting, the lower-bound discipline,
+and the v0-vs-trained-adversary distinction — is in
+[`docs/research-notes/evasion-tax.md`](docs/research-notes/evasion-tax.md). This extension is named
+here as the project's primary adversarial follow-on; the passive characterization and the first
+deliverable do not depend on it.
 
 ## Longer-arc
 
@@ -367,6 +423,21 @@ represents opaquely (compressed, superposed, or — at higher capability — ste
 This is why downstream conclusions lean on the independent, non-NLA validators
 (label-trained probe, causal interventions), which do not share the readout's blind spots.
 
+*Two trust axes, only one of which a different base would help.* It is tempting to fix the same-model
+tie by reading M' with an NLA built on a *different* base. Split the concern. **(A) Independence of
+failure modes** — a same-base reader shares M''s training and blind spots, so a confabulation
+tendency in M' plausibly recurs in the reader; a different base helps here (less-correlated failures),
+and is arguably the better design even for the non-adversarial use. **(B) Robustness under adversarial
+optimization** — the activations being read are still M''s, and M' controls them; if M' learns to emit
+activations that verbalize as benign while colluding, the reader's lineage is irrelevant (Neural
+Chameleons evades *unseen* monitors). So (B) — the control-critical axis — is **not** fixed by changing
+the base; the locus of subversion is upstream of the reader. There is also a mechanical blocker: an
+NLA's verbalizer is *initialized as the target model* and reads its own residual stream via injection,
+so M''s residual stream cannot literally be fed to a base-B NLA (different, unaligned spaces); bridging
+would need a learned cross-model map that must itself be fit on M''s activations — re-importing the
+untrusted-derived machinery the swap was meant to remove. Put the *independence* in the **validators**
+(label-trained probe, DAS-interchange), not in the NLA's base.
+
 **Possible overlap with internal Redwood / Apollo / METR work.** The
 specific intersection of NLA + AI control + monitor inspection may be
 in active internal research at safety labs. A literature check (and
@@ -415,6 +486,11 @@ fit available access and revises timelines once access is secured.
   protocol — efficient inference at scale, integration with auditor
   budgets in real deployments — is downstream engineering, not what
   this plan delivers.
+- **The trained-adversary evasion tax at full scale.** The demonstration is non-adversarial by
+  construction (§Threat-model scope); the evasion-tax extension frames and begins to measure
+  adversarial robustness, but its *trained-adversary* form — fine-tuning M' to evade across the
+  capability ladder, à la Neural Chameleons — is the larger follow-on, scoped beyond this plan's first
+  results.
 
 ## Immediate next steps
 
@@ -456,6 +532,9 @@ Document updates here as the work proceeds.
 - Goodfire AI. (2025). _causalab: Causal abstraction for mechanistic
   interpretability_ [Computer software]. GitHub.
   <https://github.com/goodfire-ai/causalab>
+- McGuinness, M., Serrano, A., Bailey, L., & Emmons, S. _Neural
+  Chameleons: Language Models Can Learn to Hide Their Thoughts from
+  Unseen Activation Monitors_. arXiv:2512.11949.
 
 ---
 

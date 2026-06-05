@@ -38,7 +38,7 @@ addresses these five gaps directly.
 
 **Demonstration: NLA characterization for monitor-activation sampling in AI control.** In AI control protocols that use an untrusted monitor, a known structural
 weakness is that the auditor inspects the monitor through its
-behavior, and that behavior may not be faithful to the monitor's intent. NLAs offer a candidate new tool — reading the monitor's activations to surface what it was actually thinking when it produced a verdict.
+behavior, and that behavior may not be faithful to the monitor's intent. NLAs offer a candidate new tool — reading the monitor's activations to surface what it was actually thinking when it produced a verdict. **Scope:** this demonstration measures whether that internals signal is present under *non-adversarial* conditions — induced collusion, with the monitor not optimizing against the readout. Robustness to a monitor that *optimizes to evade the readout* (the property that actually defines control) is deliberately out of scope here; it is the subject of the **evasion-tax** extension — see [`RESEARCH.md`](RESEARCH.md) and [`docs/research-notes/evasion-tax.md`](docs/research-notes/evasion-tax.md).
 
 **Natural cross-model application: capability vs. legibility.** Applying
 the methodology across the released open NLAs (7B → 70B capability range)

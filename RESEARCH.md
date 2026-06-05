@@ -341,7 +341,8 @@ The demonstration above is scoped to non-adversarial conditions (§Threat-model 
 control-grade question — *does an internals readout survive a monitor optimizing to evade it?* — need
 not be a yes/no wall; it can be a measurement. Reframe adversarial robustness as a **surface**: for
 each config (layer, token), how much task performance must an adversarial M' sacrifice to look benign
-to the reader — the **evasion tax**?
+to the reader — the **evasion tax**? (Token-dense, layer-sparse with the released single-layer
+NLAs — see *Limitations → Single-layer*; a free layer axis would require training NLAs.)
 
 - **Decision-relevant in both directions.** A high-tax config squeezes the adversary's option set (be
   read, or pay a measurable performance cost a behavioral audit can catch); a *negative* — no high-tax

@@ -31,6 +31,14 @@ measurement. For each config (layer ℓ, token t), ask:
 The output is an **evasion-robustness surface across configs**, not a single pass/fail: where are
 the model's task computation and the read signal entangled enough that evasion carries a cost?
 
+*Config caveat (released, single-layer NLAs).* We use the released NLAs, not ones we train, and each
+reads at **one fixed layer**. So the surface is *dense over token position and signal type at that
+layer* and **sparse, confounded over layer**: applying an NLA off its trained layer is
+out-of-distribution and is measured as a degradation/noise source, not a clean reading, and the only
+other layer points come from the four released NLAs — each at a different layer *and* a different
+model (layer confounded with capability). A free layer axis would require *training* NLAs (out of
+scope). Read every "(layer, token)" below with that in mind.
+
 ## The adversary's trilemma (why a high-tax config squeezes the option set)
 
 At a config where the read signal is load-bearing for competent monitoring, M' faces three moves,

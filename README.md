@@ -50,9 +50,7 @@ their reliability has degraded.
 
 **First deliverable.** Standalone validation of a released *open* NLA — reproduce its published
 reconstruction fidelity (FVE) and demonstrate latent-content recovery on it — a direct check that
-this class of work is in hand, ahead of the larger control-protocol demonstration. (It's *validate
-+ transfer*, not a literal replication: NLAs are welded to one model, and the paper's headline
-findings were on closed models.)
+this class of work is in hand, ahead of the larger control-protocol demonstration.
 
 See [`RESEARCH.md`](RESEARCH.md) for a more detailed plan.
 

@@ -8,11 +8,7 @@
 
 ## Scope
 
-**Validate + transfer** on a released open NLA — *not* a replication of the paper's headline findings,
-which open weights do not allow. NLAs are welded to one model (the AV is *initialized as* the target
-and reads its own residual stream); the Language Switching finding and the quantitative eval suite were
-produced on *closed* models (Opus 4.6, the Haikus). The open NLAs are separate artifacts whose
-published, reproducible number is reconstruction fidelity (~70–75% FVE).
+**Validate + transfer** on a released open NLA:
 
 - **Validate (guaranteed anchor):** reproduce the open NLA's **FVE (~70–75%)** — load AV + AR, run a
   held-out activation set through the round trip, confirm reconstruction fidelity matches. Instrument-
@@ -50,7 +46,7 @@ is wanted — or stay on Qwen for minimum time-to-result.
 ## Checklist
 
 ### Phase 0 — provision + deps (inference-only path)
-- [ ] Rent pod — RunPod H100 80 GB (Gemma) or a 24 GB card (Qwen). **Both AV and AR** are needed now
+- [ ] Rent pod — RunPod H100 80 GB (Gemma) or a 24 GB card (Qwen). **Both AV and AR** are needed
   (the AR carries the FVE anchor) → ~1.5× target footprint; still fits 80 GB for 27B.
 - [ ] `uv pip install torch transformers safetensors httpx orjson pyyaml numpy` + `sglang[all]>=0.5.6`
   — ⚠️ pin `torch<2.11` *or* use the cu124 index (unpinned cu130 conflicts with `sgl-kernel`'s cu12 wheels)

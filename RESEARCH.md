@@ -189,12 +189,8 @@ that it catches a monitor actively hiding collusion from it.*
 ### First deliverable: instrument validation + a latent-content transfer demo
 
 The first standalone deliverable **validates the released open instrument and demonstrates its core
-capability** — it is *not* a replication of the paper's headline findings, which open weights do not
-allow. NLAs are welded to one model (the AV is *initialized as* the target and reads its own residual
-stream), and the Language Switching finding and the quantitative eval suite were produced on *closed*
-models (Opus 4.6, the Haikus). The open NLAs are separate artifacts whose published, reproducible
-number is reconstruction fidelity (~70–75% FVE). So the deliverable is **validate + transfer**, shaped
-to maximise the probability of a clean, legible, positive result on weak open instruments:
+capability** — **validate + transfer**, shaped to maximise the probability of a clean, legible, positive
+result on a weak open instrument:
 
 - **Validate (guaranteed anchor).** Reproduce the open NLA's published FVE (~70–75%): load AV + AR, run
   a held-out activation set through the round trip, confirm fidelity matches. Instrument-intrinsic and

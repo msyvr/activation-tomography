@@ -186,18 +186,34 @@ that it catches a monitor actively hiding collusion from it.*
 - Score whether NLA-recovered claims about M's cognition correlate with
   monitor-failure ground truth.
 
-### First deliverable: instrument calibration (a standalone replication)
+### First deliverable: instrument validation + a latent-content transfer demo
 
-The instrument-calibration step is the project's **first standalone deliverable**, not
-merely preparation for the demonstration. Replicating the paper's Language Switching
-finding on the released *open* Gemma-3-27B NLA — construct ~20 prompts containing
-user-identity cues; apply the NLA at the assistant's first response token; score
-recovered claims against planted ground truth, separately for explicit and implicit cues
-(implicit-cue recovery meaningfully above chance is the pass) — stands on its own: a
-clean replication of an Anthropic finding on an open model. That makes it (a) the
-smallest unit that ships under limited or uncertain compute, (b) a candidate output for
-the TAIS project, and (c) a legible way for an outside reader — a funder, say — to verify
-the capability to do this class of work *before* the larger demonstration exists.
+The first standalone deliverable **validates the released open instrument and demonstrates its core
+capability** — it is *not* a replication of the paper's headline findings, which open weights do not
+allow. NLAs are welded to one model (the AV is *initialized as* the target and reads its own residual
+stream), and the Language Switching finding and the quantitative eval suite were produced on *closed*
+models (Opus 4.6, the Haikus). The open NLAs are separate artifacts whose published, reproducible
+number is reconstruction fidelity (~70–75% FVE). So the deliverable is **validate + transfer**, shaped
+to maximise the probability of a clean, legible, positive result on weak open instruments:
+
+- **Validate (guaranteed anchor).** Reproduce the open NLA's published FVE (~70–75%): load AV + AR, run
+  a held-out activation set through the round trip, confirm fidelity matches. Instrument-intrinsic and
+  scale-robust — it ships regardless of what the target represents.
+- **Transfer (legible layer).** Latent-content recovery: the AV verbalising salient content carried by
+  an *injected* activation that is not in its prompt — the read-the-internal-state primitive that
+  internals-based oversight depends on. Content is chosen as far up the safety-resonance axis as
+  smoke-testing supports: *generic* concept recovery first (guaranteed by the released `examples/`
+  decodes), *refusal / harm-state* recovery as the stretch.
+
+The goal is a *reliable, legible ability signal*, so probability of a clean positive dominates; the
+open NLAs are weak, so subtle-representation classes (implicit user-identity, sandbagging, CoT-hint
+use) carry high null risk and are deliberately out here — they belong to the project's safety arc, not
+a competence-signal first deliverable. Safety relevance comes for free at the *capability* level
+(reading latent internal content), with the refusal stretch adding *content*-level resonance. This is
+the smallest unit that ships under uncertain compute, a candidate TAIS output, and a legible way for an
+outside reader — a funder, say — to verify the capability to do this class of work *before* the larger
+demonstration exists. Bring-up, compute, and time/cost ranges are in
+[`docs/research-notes/first-deliverable-checklist.md`](docs/research-notes/first-deliverable-checklist.md).
 
 A second preparation step then supports the control demonstration:
 
@@ -510,9 +526,9 @@ fit available access and revises timelines once access is secured.
 3. `uv sync` to install dependencies; verify the codebase runs.
 4. Load a released NLA checkpoint (Gemma-3-27B AV/AR) and run the smoke-test inference
    path from [`docs/nla_upstream/inference.md`](docs/nla_upstream/inference.md).
-5. Ship the **first deliverable** — the instrument-calibration replication (Language
-   Switching on identity cues) — then proceed to detector characterization and the
-   demonstration.
+5. Ship the **first deliverable** — instrument validation (reproduce the open NLA's FVE)
+   plus the latent-content recovery demo — then proceed to detector characterization and
+   the demonstration.
 
 Document updates here as the work proceeds.
 

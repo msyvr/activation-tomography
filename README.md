@@ -25,9 +25,7 @@ Activations_](https://transformer-circuits.pub/2026/nla/) (Fraser-Taliente, Kant
 
 ## Research direction
 
-The work has a clear primary contribution and a clear demonstration.
-
-**Primary contribution: a systematic methodology for NLA characterization and cross-model comparison.** A new model developer who wants to use NLAs
+**A systematic methodology for NLA characterization and cross-model comparison.** A new model developer who wants to use NLAs
 for safety evaluations or control monitoring on their own model currently
 faces a substantial trial-and-error problem — the released NLAs are
 characterized for the paper's specific case studies, but there is no
@@ -36,9 +34,9 @@ across configurations, downstream-application calibration, cross-model
 comparison, or multi-method validation discipline. The methodology
 addresses these five gaps directly.
 
-**Demonstration: NLA characterization for monitor-activation sampling in AI control.** In AI control protocols that use an untrusted monitor, a known structural
+**Reading a monitor's internals in an AI-control protocol (non-adversarial).** In AI control protocols that use an untrusted monitor, a known structural
 weakness is that the auditor inspects the monitor through its
-behavior, and that behavior may not be faithful to the monitor's intent. NLAs offer a candidate new tool — reading the monitor's activations to surface what it was actually thinking when it produced a verdict. **Scope:** this demonstration measures whether that internals signal is present under *non-adversarial* conditions — induced collusion, with the monitor not optimizing against the readout. Robustness to a monitor that *optimizes to evade the readout* (the property that actually defines control) is deliberately out of scope here; it is the subject of the **evasion-tax** extension — see [`RESEARCH.md`](RESEARCH.md) and [`docs/research-notes/evasion-tax.md`](docs/research-notes/evasion-tax.md).
+behavior, and that behavior may not be faithful to the monitor's intent. NLAs offer a candidate new tool — reading the monitor's activations to surface what it was actually thinking when it produced a verdict. **Scope:** this measures whether the internals signal is present under *non-adversarial* conditions — induced collusion, with the monitor not optimizing against the readout. Robustness to a monitor that *optimizes to evade the readout* — the control-relevant property — is out of scope here; it is the subject of the **evasion-tax** extension — see [`RESEARCH.md`](RESEARCH.md) and [`docs/research-notes/evasion-tax.md`](docs/research-notes/evasion-tax.md).
 
 **Natural cross-model application: capability vs. legibility.** Applying
 the methodology across the released open NLAs (7B → 70B capability range)
@@ -48,9 +46,9 @@ while reconstruction quality stays high? The silent failure mode matters
 if NLAs are being used for safety findings at capability levels where
 their reliability has degraded.
 
-**First deliverable.** Standalone validation of a released *open* NLA — reproduce its published
-reconstruction fidelity (FVE) and demonstrate latent-content recovery on it — a direct check that
-this class of work is in hand, ahead of the larger control-protocol demonstration.
+**First step.** Standalone validation of a released *open* NLA — reproduce its published
+reconstruction fidelity (FVE) and demonstrate latent-content recovery — confirming the method
+runs on open-weight models, ahead of the monitor-readout demonstration.
 
 See [`RESEARCH.md`](RESEARCH.md) for a more detailed plan.
 

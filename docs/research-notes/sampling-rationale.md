@@ -1,5 +1,12 @@
 # Sampling design — rationale
 
+> **Update (2026-06-11):** under the re-headlined plan, the **reliability map is a standalone
+> deliverable** (RESEARCH.md §Grant-period deliverables), so characterization is now an *output*, not
+> only a feeder for the control demo. The decision-driven principle below carries forward unchanged —
+> but the reliability-map deliverable adds its own requirement: the cells you *report* need ~125/cell
+> for a ±10% recovery CI (the powered plan), above the ~500–1000-inference find-a-config budget here.
+> "Find one config for Stage C" is now the narrower decision that feeds the (follow-on) control demo.
+
 ## Context
 
 An earlier draft of `RESEARCH.md`'s Compute section specified a Cartesian-product

@@ -79,15 +79,14 @@ is wanted — or stay on Qwen for minimum time-to-result.
 - [ ] FVE match + content-recovery rates + the framing (capability-level safety relevance; refusal as
   the content-level stretch); one figure; short standalone report
 
-## Compute / time / cost (ranges)
+## Compute / time (ranges)
 
 - **Compute is trivial.** FVE on a few hundred held-out activations + a few dozen recovery decodes ≈
   minutes of GPU. The GPU is for *capacity* (fitting a 27B AV **and** AR), not throughput. **1× H100
-  80 GB** (Gemma) or **1× 24 GB card** (Qwen).
+  80 GB** (Gemma) or **1× 24 GB card** (Qwen); **~10–30 pod-hours** with disciplined shutdown.
 - **Person-time: ~3–7 focused days**, wall-clock **~1–2 weeks** with iteration. Range driven by Phase 1
   (clean decode + round trip in half a day if it "just works"; 1–2 days if injection-debugging is needed).
-- **GPU cost: ~$30–90** (Gemma-27B H100 @ ~$2.89/hr, ~10–30 pod-hours with disciplined shutdown) or
-  **~$10–30** (Qwen-7B on a $0.69–0.86/hr card). Compute is *not* the binding cost — time is.
+- Compute is *not* the binding cost — time is. (Dollar figures are funder-facing; kept out of the repo.)
 
 | Phase | Person-time | GPU |
 |---|---|---|

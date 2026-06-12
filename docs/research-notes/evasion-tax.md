@@ -50,8 +50,13 @@ all bad:
    quality drops → a **behavioral audit catches the degradation**. Closed *iff* the tax exceeds the
    slack the behavioral checks can actually *resolve* — not just nominal slack, but enough that the
    behavioral monitor has the statistical power to detect an X% drop.
-3. **Find a competent-but-unreadable encoding** → the escape hatch (steganography / superposition).
-   The residual risk.
+3. **Compute the load-bearing part where the reader isn't looking** → the escape hatch. With the
+   released *single-layer* NLAs this splits, and the cheap form dominates: **(3a) relocation** — move
+   the collusion-relevant computation to a layer or token the fixed reader doesn't see (cheap, because
+   transformer computation is redundant and distributed; a one-layer reader cannot rule it out);
+   **(3b) competent-but-unreadable encoding** at the read config itself — steganography / superposition
+   (the hard, exotic escape). 3a is the residual risk that actually bites with released readers, and it
+   is why the *negative* result below is confounded.
 
 A true "no winning move" needs **both** tax > detectable-slack **and** arm 3 empty at this config.
 So the deliverable is concrete:
@@ -69,9 +74,14 @@ is the soft one.
   behavioral and statistical checks tolerate — a number that lives on *both* sides of the control
   ledger (control is accounting: safety = the adversary has no move that achieves its goal and stays
   inside what the checks tolerate).
-- **A negative** — no high-tax config anywhere M' actually computes — is a clean, currently
-  *unmeasured* verdict that internals monitoring of an untrusted monitor is structurally fragile, and
-  the field should not lean on it for control.
+- **A negative is confounded by the single-layer instrument — state it as a bound, not a verdict.**
+  "No high-tax config" cannot separate *internals monitoring of an untrusted monitor is structurally
+  fragile* (the tempting claim) from *a single-layer reader is cheaply evaded by relocation* (arm 3a —
+  near-tautological, not a finding about internals monitoring writ large). A flat surface yields only a
+  **lower bound**: evasion at the readable layer costs ≤ X against R. Upgrading it to a verdict on
+  internals monitoring in general would need enough layers read to foreclose relocation — i.e. training
+  NLAs (out of scope). The clean-fragility verdict is **not** on the menu with released single-layer
+  NLAs; do not pitch it as one.
 
 ## The tax is a behavioral measurement
 
@@ -81,11 +91,36 @@ require trusting the verbalization, which lifts weight off the validation long-p
 ⇒ it was. (The reader's non-adversarial-condition reliability — arm 1 — still rests on the
 independent validators: label-trained probe, DAS-interchange.)
 
+## The tax needs its own resolution floor (before any tax is trusted)
+
+The tax is a difference in M''s monitoring performance (verdict accuracy on a flag-the-bad-output task)
+between an evade condition and an honest one — a difference of two task-clustered proportions. So it
+inherits the phantom discipline: **report the smallest tax the design can resolve before reporting a
+tax.** Sketch, to size the demo (p ≈ monitor accuracy, δ = tax, design effect D = 1 + (m−1)·ICC):
+
+> N per condition ≈ (z_α + z_β)² · 2p(1−p) / δ² · D.
+> At p = 0.7, D ≈ 1.5, two-sided α = 0.05, power 0.8: resolving δ = 0.10 needs **≈ 500 scored verdicts
+> per condition** — far above the demo's planned ~100. At N ≈ 100 the design resolves only δ ≳ **0.22**;
+> moderate taxes (the decision-relevant regime — cheap enough to matter, not free) sit **below the
+> floor** and read as null.
+
+So: fix a **minimum interesting tax (MID)** tied to the behavioral audit's *detectable* slack (arm 2
+above — the tax only matters if it clears what the behavioral checks can resolve), compute the N that
+resolves it, and report the achieved floor alongside every tax. A tax without its floor is exactly the
+error the phantom suite exists to prevent.
+
 ## Two adversary strengths (the scope fork)
 
 - **Prompted adversary (tax-v0).** Prompt M' to collude while looking benign to the known reader;
-  measure the performance hit. Cheap, ships under compute uncertainty, weak adversary → a weak/low
-  tax. A reasonable first arm on the reliability map.
+  measure the performance hit. Cheap, ships under compute uncertainty. **Validity caveat — the raw
+  drop is not the tax.** A drop under "do your job *and* satisfy this extra constraint" is confounded
+  with the generic cost of *any* hard dual objective, independent of read-signal entanglement. The tax
+  is the **excess** drop over a *matched-load control*: a second condition giving M' a dual objective of
+  comparable complexity that does **not** target the reader (e.g. "produce your verdict *and* append a
+  structured rationale in a fixed schema"). tax-v0 ≔ (drop under read-evasion) − (drop under
+  matched-load); only the excess is attributable to evasion. Without the control, tax-v0 is a number,
+  not a measurement — and even with it, a prompted adversary is weak, so a near-zero tax-v0 bounds, it
+  does not establish.
 - **Trained adversary (the flagship follow-on).** Fine-tune M' to evade the reader (cf. Neural
   Chameleons, which shows fine-tuned models zero-shot-evade *unseen* activation monitors). Heavier —
   not for GPU cost (LoRA-on-27B is feasible on a rented H100) but because building a strong-enough
@@ -95,14 +130,19 @@ Both measure **assuming the adversary knows the reader's config** — hiding it 
 security-through-obscurity and just returns us to auditing-grade. The tax is control-relevant
 precisely because it is paid even when the adversary knows exactly where you read.
 
-## Capability scaling: the adversarial twin of Mode 2
+## Capability scaling: the adversarial twin of Mode 2 (suggestive only)
 
-`RESEARCH.md`'s Mode 2 tracks whether *passive* legibility silently degrades as capability rises. The
-adversarial twin tracks whether *evasion gets cheaper*: run the tax measurement across the released
-open-NLA capability ladder and ask whether high-tax configs **erode**. Eroding tax is the adversarial
-early-warning that internals monitoring is losing its grip at the frontier — the most
-decision-relevant cross-model signal the project can produce, and the least scoopable (gated on the
-open-NLA-ladder artifact plus a longitudinal sweep nobody has set up).
+`RESEARCH.md`'s Mode 2 tracks whether *passive* legibility silently degrades as capability rises; the
+adversarial twin would track whether *evasion gets cheaper* — run the tax across the released open-NLA
+ladder and ask whether high-tax configs **erode**. **State the confound plainly: this is four points
+(Qwen-7B, Gemma-12B/27B, Llama-70B), each a different model family, NLA, and trained read-layer, so
+"capability" is entangled with architecture and read-layer.** Four points varying three things at once
+cannot support "evasion gets cheaper as capability rises" — the cross-family curve is **suggestive, not
+dispositive**, and must not be reported as a clean scaling result. The defensible test is the
+**within-model** capability-stress arm (one model, harder/longer conditions) — a *proxy* for
+capability, not capability scaling, and it does not yield the cross-model curve. From this instrument
+set we get the clean inference *or* the cross-model story, not both; the honest deliverable is the
+within-model arm plus a clearly-flagged 4-point suggestion.
 
 ## Why a different-base reader does not fix this (two trust axes)
 

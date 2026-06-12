@@ -2,7 +2,7 @@
 
 > _Living document_
 
-_This research is motivated by AI safety and alignment, with a focus on building reliable, characterized measurement instruments. The technical goal: develop a systematic methodology for characterizing, configuring, and validating Natural Language Autoencoders (NLAs) as measurement instruments — enabling cross-model comparison and downstream-application targeting that the field currently lacks. The chosen demonstration is NLA characterization for monitor-activation sampling in AI control protocols, with capability-vs-legibility tracking as a natural cross-model application. The demonstration is deliberately scoped to non-adversarial conditions; the adversarial-robustness axis that actually defines AI control is addressed as a separate, named extension — the **evasion tax**._
+_This research is motivated by AI safety and alignment: NLAs are being adopted for safety-critical monitoring (pre-deployment auditing already; proposed for AI control) faster than their failure modes are characterized. The technical goal is a systematic methodology for characterizing, configuring, and validating Natural Language Autoencoders (NLAs) as measurement instruments — the prerequisite the field skips. The two near-term deliverables apply it on a released reader: a **reliability map** (where it reads faithfully vs confabulates) and a **silent-legibility probe** (does verbalization quietly degrade under representational stress while reconstruction holds — the audit-tool-looks-fine-but-isn't failure mode). The adversarial axis that defines AI control — does a readout survive a monitor optimizing to evade it — is the named follow-on, the **evasion tax**, scoped honestly as a single-layer lower bound (see [`docs/research-notes/evasion-tax.md`](docs/research-notes/evasion-tax.md)). This characterization is upstream of, and complementary to, the adversarial-robustness work at Redwood / on Neural Chameleons — not in competition with it._
 
 ## Premise
 
@@ -131,9 +131,48 @@ provide a fourth, structurally independent validator — independent in
 the sense that it bypasses the NLA pipeline entirely, unlike AR-derived
 steering. Ensures NLA-only positives don't drive downstream conclusions.
 
+## Grant-period deliverables: two powered experiments (the headline)
+
+The methodology's two near-term deliverables are the **reliability map** and the **within-model
+silent-legibility probe** — both feasible on one released NLA (Gemma-3-27B, single H100), both with a
+**negative control that must fail** so a positive is non-vacuous. The control-protocol demonstration
+(§Demonstration) and the evasion tax (§Adversarial extension) are the **stretch / follow-on**, built
+once the instrument is characterized. Effect sizes below *size* the work; a day-1 mini-run fixes the
+real base rate and task-clustering before N is set (cf. the PoF-E Stage-0 calibration).
+
+**Deliverable 1 — reliability map (recovery PSF + blind-spot map).** *Design:* the phantom-suite
+characterization (§Demonstration → First deliverable, and §Detector characterization), scored per
+(token × signal-type × off-layer) cell for recovery of *known* content, with a **signal-absent
+negative control** giving each cell's false-positive rate — a blind spot is low true-recovery, a
+confabulator is high false-positive, both findings. Multi-method validation (label-trained probe +
+behavioral + AR-steering subset); the bar is *beat a same-activation probe or deliver a validated
+verbalization it can't*. *Power:* per-cell recovery is a proportion p, design effect D = 1+(m−1)·ICC,
+so N = z²·p(1−p)/w²·D ⇒ **≈ 125 / cell** for ±10% at p = 0.5; a coarse blind-spot screen needs
+**~40 / cell**. Tiered: coarse-40 across ~55 cells (native dense + off-layer sparse) → top-up to ~130
+on boundary cells ≈ **3,800 AV inferences**. *Compute:* ≈ **2.5 M** NLA-generation tokens (incl. the
+FVE round-trip) → a few GPU-hours.
+
+**Deliverable 2 — within-model silent-legibility degradation (clean Mode 2).** *Design:* hold the
+model fixed; stress representations {baseline, long-context, hard-task, multi-turn,
+compression-pressure}; per condition measure **FVE** *and* **legibility** (LLM-graded quality,
+paraphrase-invariance, compressibility). Silent failure = legibility slope < 0 while FVE slope ≈ 0.
+Within-model **by design** — the cross-family curve (§Cross-model) confounds capability with
+architecture and read-layer and is suggestive only; FVE-holds is the control that makes a legibility
+drop *silent* rather than loud. *Power:* legibility is continuous, N/condition = 2(z_α+z_β)²/d² ⇒
+**≈ 63** (d = 0.5) / **≈ 174** (d = 0.3). The headline is an **interaction** (legibility drops more
+than FVE) — pre-registered as a descriptive slope-vs-slope trend unless powered to ≥ 150/condition;
+Holm across legibility metrics. *Compute:* ≈ **1 M** NLA-generation tokens → ~1.5–3 GPU-hours.
+
+Grant-period compute for both: ≈ **3.5 M** NLA tokens on one H100 — well within a small
+rapid/credits budget; bring-up (residual-stream injection + the sglang patches) and investigator time
+are the binding cost, and the literature/outreach check (§Immediate next steps) gates the follow-on
+and runs first. Full powered + costed plan, including the evasion-tax follow-on, is the source note
+this section excerpts.
+
 ## Demonstration: NLA characterization for monitor-activation sampling in AI control
 
-To demonstrate the methodology, we'll apply it to AI control protocols where an untrusted monitor reviews an untrusted model's outputs, and the auditor budget includes activation sampling of the monitor itself via NLA.
+_(Stretch / follow-on — the control application built on the characterized instrument from
+§Grant-period deliverables.)_ To demonstrate the methodology, we'll apply it to AI control protocols where an untrusted monitor reviews an untrusted model's outputs, and the auditor budget includes activation sampling of the monitor itself via NLA.
 
 ### The control-protocol motivation
 
@@ -326,13 +365,15 @@ concrete operational stake.
   range; look for divergence between small-model and large-model
   responses to meaning-preserving transformations.
 
-**Adversarial twin of Mode 2.** Mode 2 tracks whether *passive* legibility silently degrades as
-capability rises. Its adversarial counterpart tracks whether *evasion gets cheaper*: run the
-evasion-tax measurement (see §Adversarial extension) across this same capability ladder and ask
-whether high-tax configs **erode** — whether a more capable monitor can hide its cognition from the
-reader at lower task-performance cost. Eroding tax is the adversarial early-warning that internals
-monitoring is losing its grip at the frontier, and is among the most decision-relevant cross-model
-signals the project can produce.
+**Adversarial twin of Mode 2 (suggestive only).** Mode 2 tracks whether *passive* legibility silently
+degrades as capability rises; its adversarial counterpart would track whether *evasion gets cheaper* —
+run the evasion-tax (see §Adversarial extension) across this same ladder and ask whether high-tax
+configs **erode**. But the same confound that weakens the passive curve binds harder here: the ladder
+is four points, each a different family, NLA, and read-layer, so "capability" is entangled with
+architecture and read-layer. Four triply-confounded points cannot support a clean "evasion gets cheaper
+with capability" claim — the cross-family curve is **suggestive, not dispositive**. The defensible
+version is the *within-model* capability-stress arm (a proxy for capability, not capability scaling);
+the cross-model curve is a flagged suggestion, not a result.
 
 ### What this enables
 
@@ -356,10 +397,13 @@ each config (layer, token), how much task performance must an adversarial M' sac
 to the reader — the **evasion tax**? (Token-dense, layer-sparse with the released single-layer
 NLAs — see *Limitations → Single-layer*; a free layer axis would require training NLAs.)
 
-- **Decision-relevant in both directions.** A high-tax config squeezes the adversary's option set (be
-  read, or pay a measurable performance cost a behavioral audit can catch); a *negative* — no high-tax
-  config anywhere M' actually computes — is a clean, currently-unmeasured verdict that internals
-  monitoring of an untrusted monitor is structurally fragile, and should not be leaned on for control.
+- **Decision-relevant — but asymmetrically, given single-layer readers.** A high-tax config squeezes
+  the adversary's option set (be read, or pay a measurable performance cost a behavioral audit can
+  catch). A *negative*, though, is **confounded**: with a fixed-layer reader, "no high-tax config"
+  cannot separate *internals monitoring is fragile* from *a one-layer reader is cheaply evaded by
+  relocating the computation* — so a flat surface yields a single-layer **lower bound**, not the clean
+  fragility verdict. Upgrading the negative would require multi-layer reading (training NLAs, out of
+  scope). See [`docs/research-notes/evasion-tax.md`](docs/research-notes/evasion-tax.md).
 - **It is a behavioral measurement.** The tax is M''s task-performance cost under forced evasion — it
   does not depend on trusting the verbalization, which lifts weight off the validation long-pole. (The
   reader's non-adversarial-condition reliability still rests on the independent validators.)

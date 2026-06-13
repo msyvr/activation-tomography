@@ -129,7 +129,16 @@ on subspaces identified by DAS-style methods (cf.
 [causalab](https://github.com/goodfire-ai/causalab); Goodfire AI, 2025)
 provide a fourth, structurally independent validator — independent in
 the sense that it bypasses the NLA pipeline entirely, unlike AR-derived
-steering. Ensures NLA-only positives don't drive downstream conclusions.
+steering. A no-activation logit monitor (Aranguri 2026) is a fifth
+candidate — the cheapest and most structurally distinct, reading the
+model's output distribution and touching no activations — but it
+corroborates only in the non-opaque regime: a concept represented too
+opaquely to verbalize will neither lift a forced sentence's probability
+nor stay NLA-legible, so the two go blind together in exactly the Mode-2 /
+steganographic case the silent-legibility work targets. There the
+label-trained probe, reading linearly-decodable-but-unverbalizable
+structure directly, is the independent validator — not the logit monitor.
+Ensures NLA-only positives don't drive downstream conclusions.
 
 ## Grant-period deliverables: two powered experiments (the headline)
 
@@ -289,10 +298,17 @@ Critical for treating the demonstration as evidence:
 NLA-recovered claims about M''s cognition track the planted monitor-failure
 conditions at meaningfully above chance, AND at least one structurally-
 independent validator (causal, probe, or behavioral) corroborates. Crucially,
-report NLA detection alongside two cheaper baselines — a linear probe on the
-same activations and behavioral verdict-vs-output divergence — and state what
-the NLA adds: either detection signal beyond those baselines, or a *validated*
-(non-confabulated) verbalization they cannot provide. A result where a linear
+report NLA detection alongside three cheaper baselines — a linear probe on the
+same activations, behavioral verdict-vs-output divergence, and a no-activation
+logit monitor (token-force a known collusion-/eval-aware sentence, read its
+probability; Aranguri 2026) — and state what the NLA adds: either detection
+signal beyond those baselines, or a *validated* (non-confabulated) verbalization
+they cannot provide. The logit monitor is the cheapest of the three (no
+activations, no training) but needs a *named* target, so it bites only for
+readily-verbalizable conditions; where M''s collusion is too opaque to lift a
+forced sentence's probability it goes blind — usefully narrowing the NLA's
+distinctive value to that opaque regime, the one the same-activation probe and
+the NLA actually contest. A result where a linear
 probe matches NLA detection and the verbalization is not independently validated
 does NOT support "NLA-based monitor inspection works" — it shows the signal
 exists and a cheaper instrument finds it. Without both independent corroboration
@@ -574,6 +590,8 @@ Document updates here as the work proceeds.
 
 ## References
 
+- Aranguri, S. (2026). _Logits as a new monitor for evaluation
+  awareness_. LessWrong / Alignment Forum (Goodfire Research).
 - Fraser-Taliente, K., Kantamneni, S., Ong, E., Mossing, D., Lu, C.,
   Bogdan, P. C., et al. (2026). _Natural Language Autoencoders Produce
   Unsupervised Explanations of LLM Activations_. Transformer Circuits

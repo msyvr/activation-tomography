@@ -141,7 +141,7 @@ cannot support "evasion gets cheaper as capability rises" — the cross-family c
 dispositive**, and must not be reported as a clean scaling result. The defensible test is the
 **within-model** capability-stress arm (one model, harder/longer conditions) — a *proxy* for
 capability, not capability scaling, and it does not yield the cross-model curve. From this instrument
-set we get the clean inference *or* the cross-model story, not both; the honest deliverable is the
+set we get the clean inference *or* the cross-model story, not both; the defensible deliverable is the
 within-model arm plus a clearly-flagged 4-point suggestion.
 
 ## Why a different-base reader does not fix this (two trust axes)
